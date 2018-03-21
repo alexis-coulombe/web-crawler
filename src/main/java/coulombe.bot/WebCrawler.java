@@ -16,21 +16,19 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by 1436023 on 2018-01-26.
- */
 public class WebCrawler {
     public final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1";
 
-	private Set<String> emails = new HashSet<String>();
+	private Set<String> emails = new HashSet<String>(); // Store each emails of every page. (We do not store in anywhere yet)
+	
     private List<String> links = new LinkedList<String>();
     private Set<String> visited = new HashSet<String>();
     private List<String> toVisit = new LinkedList<String>();
 
     private int depth;
     private String url, saveRep;
-    private Document currentDoc;
-    private Connection conn;
+    private Document currentDoc; // Current html document
+    private Connection conn;	 // Current connection
 
     public WebCrawler(int depth, String url, String saveRep){
         this.depth = depth;
@@ -38,6 +36,10 @@ public class WebCrawler {
         this.saveRep = saveRep;
     }
 
+    /**
+     * Crawl in the specified url
+     * @param url
+     */
     private void crawl(String url)  {
         try {
             conn = Jsoup.connect(url).userAgent(USER_AGENT);
@@ -57,15 +59,18 @@ public class WebCrawler {
                 emails.add(matcher.group());
             }
 
-            System.out.println("Site visité: " + url);
+            System.out.println("Visited website: " + url);
 
             saveHTMLDoc();
 
         } catch (IOException e) {
-            System.out.println("Erreur dans l\'url fournit: " + url + "(probablement une page introuvable)");
+            System.out.println("Error at url: " + url + "(probably a dead end)");
         }
     }
 
+    /**
+     * Save the html document into the save repository
+     */
     private void saveHTMLDoc(){
             try {
                 String[] path = url.split("/");
@@ -73,15 +78,10 @@ public class WebCrawler {
 
                 if(!title.endsWith(".html"))
                     title += ".html";
-
-                if(title.equals("3.html")){
-                    Files.createDirectories(Paths.get(saveRep + "\\" + "/sub"));
-                    title = "/sub/3.html";
-                }
+                else
+                    title = currentDoc.title();
 
                 String txtDoc = currentDoc.toString();
-
-                txtDoc = txtDoc.replaceAll("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+", "alexiscoulombe@hotmail.com");
 
                 File file = new File(saveRep + "\\" + title);
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -93,6 +93,9 @@ public class WebCrawler {
             }
     }
 
+    /**
+     * Searching links within each pages
+     */
     public void search() {
         while(visited.size() <= depth) {
             if (toVisit.isEmpty()) {
@@ -108,14 +111,14 @@ public class WebCrawler {
             toVisit.addAll(links);
         }
 
-        List<String> liste = new ArrayList<String>(emails);
-        Collections.sort(liste, String.CASE_INSENSITIVE_ORDER);
-
-        System.out.println("Courriel trouvé: " + liste.toString());
-        System.out.println("La recherche s'est terminé. Contenu sauvegarder sous: " + saveRep);
+        System.out.println("Crawling ended, html files saved in: " + saveRep);
         System.exit(1);
     }
 
+    /**
+     * Return the next url to search
+     * @return String
+     */
     private String nextUrl(){
         String nextUrl;
 
