@@ -47,6 +47,9 @@ public class ErrorManager {
         exit();
     }
 
+    /**
+     * Print syntax error and close the program
+     */
     public static void exit() {
         System.out.println("Syntax: \n" + "1) Search depth which is a positive integer.\n"
                 + "2) Start url.\n"
