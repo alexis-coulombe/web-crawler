@@ -27,6 +27,10 @@ public class CoulombeBot
         bot.init(args);
     }
 
+    /**
+     * Init the crawler using arguments given
+     * @param args
+     */
     private void init(String[] args){
         depth = setDepth(args[0]);
         url = setUrl(args[1]);
@@ -56,7 +60,7 @@ public class CoulombeBot
     }
 
     private String setUrl(String url){
-        HttpURLConnection  uConn = null;
+        HttpURLConnection  uConn;
 
         try {
             URL u = new URL(url);
