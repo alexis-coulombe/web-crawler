@@ -15,31 +15,31 @@ public class ErrorManager {
     public static void printError(Errors type, String info){
         switch(type){
             case INVALID_URL: {
-                System.out.println(info + " n'est pas une url valide ou n'existe pas.");
+                System.out.println(info + " is not a valid URL.");
                 break;
             }
             case INVALID_URL_FORMAT: {
-                System.out.println(info + " n'est pas une url valide. (format)");
+                System.out.println(info + " is not a valid URL. (format)");
                 break;
             }
             case INVALID_ARGS_LENGTH: {
-                System.out.println("Vous n'avez pas le bon nombre d'arguments.");
+                System.out.println("You must specify the arguments.");
                 break;
             }
             case INVALID_INT_SIZE: {
-                System.out.println(info + " doit être supérieur à 0.");
+                System.out.println(info + " must be greater than 0.");
                 break;
             }
             case INVALID_INT: {
-                System.out.println(info + " n'est pas un nombre entier valide.");
+                System.out.println(info + " is not a valid integer.");
                 break;
             }
             case INVALID_DIR: {
-                System.out.println(info + " n'est pas une répertoire valide ou n'existe pas. ");
+                System.out.println(info + " is not a valid repository. ");
                 break;
             }
             case INVALID_DIR_PERM: {
-                System.out.println("Vous n'avez pas les droits d'écrire ou de lire le fichier: " + info);
+                System.out.println("You don't have the right on this repository: " + info);
                 break;
             }
         }
@@ -48,9 +48,9 @@ public class ErrorManager {
     }
 
     public static void exit() {
-        System.out.println("Syntaxe: \n" + "1) La profondeur d'exploration qui doit être un nombre entier positif.\n"
-                + "2) L\'url de départ qui est la première page à explorer. Il doit s'agir d'une adresse valide (le format est correct et il y a une page qui y correspond)\n"
-                + "3) Le répertoire où écrire les copies locales des fichiers explorés. Le dossier doit être accessible et on doit pouvoir y écrire.\n");
+        System.out.println("Syntax: \n" + "1) Search depth which is a positive integer.\n"
+                + "2) Start url.\n"
+                + "3) Save repository.\n");
 
         System.exit(1);
     }
