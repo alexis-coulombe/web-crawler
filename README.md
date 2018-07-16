@@ -1,2 +1,2 @@
 # web-crawler
-Simpler java web crawler
+Java web crawler
